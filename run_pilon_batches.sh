@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # TO ADD :
-#	- merge results in one fasta file !!
 #	- add OutputDir options (currently create batches in current folder)
 #	- create fata fai if not already there
 
@@ -145,6 +144,7 @@ if [ ${NbPilonFasta} eq ${batchNumber} ]; then
 else
 	echo "Wrong number of fasta!"
 	echo "Pilon should have created ${batchNumber} fasta, we found ${NbPilonFasta} fasta..."
+	exit 1
 fi
 
-exit 1
+exit 0
