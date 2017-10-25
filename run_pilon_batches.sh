@@ -91,7 +91,6 @@ for ID in ${scaffoldIDs}; do
 
 	count=$((${count}+1))
 
-	# To avoid having a comma at the beginning (and avoid pilon throwing an error)
 	batch="${batch},${ID}"
 
 	# Launch Pilon every "batchSize" IDs
@@ -99,7 +98,10 @@ for ID in ${scaffoldIDs}; do
 
 		batchNumber=$((${batchNumber}+1))
 
-		cmd="java -jar ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets ${batch} > pilon_on_batch${batchNumber}.log"
+		# To avoid having a comma at the beginning (and avoid pilon throwing an error)
+		batch=$(echo ${batch} | sed 's/^,//')
+
+		cmd="java -jar ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 
 		echo ${cmd}
 		eval ${cmd}
@@ -113,20 +115,23 @@ for ID in ${scaffoldIDs}; do
 
 done
 
-
+echo "FINAL BATCH"
 # The last batch for the Ids left (not useful if number of scaffolds is modulo the batch size)
 if [ "$batch" != "" ]; then
 	batchNumber=$((${batchNumber}+1))
 
-	cmd="java -jar ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets ${batch} > pilon_on_batch${batchNumber}.log"
+	batch=$(echo ${batch} | sed 's/^,//')
+
+	cmd="java -jar ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 
 	echo ${cmd}
 	eval ${cmd}
 
-	echo "BATCH ${batchNumber} Done !\n\n"
+	echo "BATCH ${batchNumber} Done !"
+	echo ""
 fi
 
 
-echo "All the batches have been processed !\n"
+echo "All the batches have been processed !"
 
 # Merge fasta here
