@@ -132,6 +132,19 @@ if [ "$batch" != "" ]; then
 fi
 
 
-echo "All the batches have been processed !"
+echo "All the batches have been processed"
+echo ""
+echo "Merging ${NbPilonFasta} fasta..."
 
 # Merge fasta here
+NbPilonFasta=$(find ./pilon_on_batch* -maxdepth 1 -name "*.fasta" | wc -l)
+if [ ${NbPilonFasta} eq ${batchNumber} ]; then
+	${prefix} = "pilon_corrected_assembly"
+	cat ./pilon_on_batch*/*.fasta > ${prefix}.fasta
+	echo "Done, the corrected assembly is: ${prefix}.fasta"
+else
+	echo "Wrong number of fasta!"
+	echo "Pilon should have created ${batchNumber} fasta, we found ${NbPilonFasta} fasta..."
+fi
+
+exit 1
