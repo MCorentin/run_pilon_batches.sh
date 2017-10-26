@@ -100,7 +100,7 @@ for ID in ${scaffoldIDs}; do
 		# To avoid having a comma at the beginning (and avoid pilon throwing an error)
 		batch=$(echo ${batch} | sed 's/^,//')
 
-		cmd="java -jar ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
+		cmd="java -jar -Xmx250G ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 
 		echo ${cmd}
 		eval ${cmd}
@@ -121,7 +121,7 @@ if [ "$batch" != "" ]; then
 
 	batch=$(echo ${batch} | sed 's/^,//')
 
-	cmd="java -jar ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
+	cmd="java -jar -Xmx250G ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 
 	echo ${cmd}
 	eval ${cmd}
