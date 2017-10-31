@@ -7,8 +7,7 @@
 # Runs pilon in batches, uses the fasta fai from the assembly to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids)
 # Output is one folder for each batch
 
-function usage
-{
+function usage {
         echo "USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -p [pilon.jar]"
         echo "  -h Print this help message"
         echo "  -t Number of threads to use"
@@ -55,7 +54,7 @@ while getopts ht:a:b:f:p: opt; do
 done
 
 # Check user input
-if [[ ! -r ${assemblyFasta} ]]; then
+if [ ! -r ${assemblyFasta} ]; then
 	echo ""
 	echo "Cannot read the Assembly fasta file: ${assemblyFasta}"
 	echo ""
@@ -64,7 +63,7 @@ if [[ ! -r ${assemblyFasta} ]]; then
 fi
 
 fastaFaiFile=${assemblyFasta}".fai"
-if [[ ! -r ${fastaFaiFile} ]]; then
+if [ ! -r ${fastaFaiFile} ]; then
 	echo ""
 	echo "Cannot read the fasta.fai file (must be next to the fasta file and have the same name): ${fastaFaiFile}"
 	echo ""
