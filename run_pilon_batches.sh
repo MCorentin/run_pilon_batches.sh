@@ -137,7 +137,7 @@ echo "Merging ${NbPilonFasta} fasta..."
 # Merge fasta here
 NbPilonFasta=$(find ./pilon_on_batch* -maxdepth 1 -name "*.fasta" | wc -l)
 if [ ${NbPilonFasta} -eq ${batchNumber} ]; then
-	${prefix} = "pilon_corrected_assembly"
+	prefix="pilon_corrected_assembly"
 	cat ./pilon_on_batch*/*.fasta > ${prefix}.fasta
 	echo "Done, the corrected assembly is: ${prefix}.fasta"
 else
