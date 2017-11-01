@@ -8,22 +8,20 @@
 # Output is one folder for each batch
 
 function usage {
-        echo "USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -p [pilon.jar] -n"
+        echo "USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -p [pilon.jar]"
         echo "  -h Print this help message"
         echo "  -t Number of threads to use"
         echo "  -a Assembly in fasta format"
         echo "  -b batch size (how many contigs to process per pilon run)"
         echo "  -f indicate the bam files location, format : '--frags /path/to/file1.bam --frags /path/to/file2.bam'"
 	echo "  -p path to pilon jar file"
-	echo "	-n use nostray with pilon (identify weird pairs, increase memory usage)"
 }
 
 # Default values
 batchSize=100
 threads=20
-nostray="F"
 
-while getopts ht:a:b:f:p:n opt; do
+while getopts ht:a:b:f:p: opt; do
         case ${opt} in
                 h)
                         usage
@@ -44,9 +42,6 @@ while getopts ht:a:b:f:p:n opt; do
 		p)
 			pilonJar=${OPTARG}
                 ;;
-		n)
-			nostray="T"
-		;;
                 \?)
                         echo "Invalid option: -${OPTARG}"
                         exit 1
@@ -104,15 +99,11 @@ for ID in ${scaffoldIDs}; do
 		# To avoid having a comma at the beginning (and avoid pilon throwing an error)
 		batch=$(echo ${batch} | sed 's/^,//')
 
-
-
-		if [ ${nostray} == "T" ]; then
-			cmd="java -jar -Xmx250G ${pilonJar} --nostrays"
+		if [ ${nostray} = R"T" ]; then
+			cmd="java -jar -Xmx250G ${pilonJar} --nostrays --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 		else
-			cmd="java -jar -Xmx250G ${pilonJar}"
+			cmd="java -jar -Xmx250G ${pilonJar} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 		fi
-
-		cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
 
 		echo ${cmd}
 		eval ${cmd}
