@@ -41,7 +41,7 @@ function do_batch {
 		cmd="java -jar -Xmx250G ${pilonJar}"
 	fi
 
-	cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output ${outputDir}/pilon_on_batch${batchNumber} --outdir ${outputDir}/pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' >  ${outputDir}/pilon_on_batch${batchNumber}.log"
+	cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir ${outputDir}/pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' >  ${outputDir}/pilon_on_batch${batchNumber}.log"
 
 	echo ${cmd}
 	eval ${cmd}
@@ -140,7 +140,6 @@ for ID in ${scaffoldIDs}; do
 
 	# Launch Pilon every "batchSize" IDs
 	if [ ${count} -ge ${batchSize} ]; then
-
 		do_batch
 	fi
 
@@ -161,7 +160,7 @@ echo "Merging ${NbPilonFasta} fasta files..."
 NbPilonFasta=$(find ${outputDir}/pilon_on_batch* -maxdepth 1 -name "*.fasta" | wc -l)
 if [ ${NbPilonFasta} -eq ${batchNumber} ]; then
 	prefix="pilon_corrected_assembly"
-	cat ${outputDir}/pilon_on_batch*/*.fasta > ${outputDir}${prefix}.fasta
+	cat ${outputDir}/pilon_on_batch*/*.fasta > ${outputDir}/${prefix}.fasta
 	echo "Done, the corrected assembly is: ${outputDir}/${prefix}.fasta"
 else
 	echo "Wrong number of fasta!"
