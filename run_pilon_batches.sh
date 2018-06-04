@@ -117,6 +117,7 @@ if [ ! -w ${outputDir} ]; then
 	echo ""
 	usage
 	exit 1
+fi
 
 ##### Add tests for other inputs (--frags etc...)
 
