@@ -2,7 +2,7 @@
 
 # TO ADD :
 #	- create fata fai if not already there
-#	- add checks for frags
+#	- add checks for frags + heck if bams are indexed
 #
 # Runs pilon in batches, uses the fasta fai from the assembly to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids)
 # Output is one folder for each batch
@@ -21,7 +21,7 @@ function usage {
         echo "  -t Number of threads to use (default: 20)"
         echo "  -a Assembly in fasta format (required)"
         echo "  -b batch size: how many sequences to process per pilon run (default: 100)"
-        echo "  -f indicate the bam files location, format : '--frags /path/to/file1.bam --frags /path/to/file2.bam' (required)"
+        echo "  -f indicate the bam files location, format : '--frags /path/to/file1.bam --frags /path/to/file2.bam' (required + the bams must be indexed !)"
 	echo "	-o output directory (default: current directory)"
 	echo "  -p path to pilon jar file (required)"
 	echo "	-n use nostray with pilon, this skip the identification of stray pairs but decrease memory usage"
@@ -119,7 +119,7 @@ if [ ! -w ${outputDir} ]; then
 	exit 1
 fi
 
-##### Add tests for other inputs (--frags etc...)
+##### Add tests for other inputs (--frags etc... + check if bam.bai exists)
 
 
 

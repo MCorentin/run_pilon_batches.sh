@@ -17,6 +17,6 @@ bash run_pilon_batches.sh -t <i>threads</i> -a <i>assembly.fasta</i> -b <i>batch
 # To implement 
 
 - Add memory setting option (now hard coded to 250 Gb)
-- More checks for user input (notably the --frags option)
+- More checks for user input (notably the --frags option) + check if bams are indexed
 - Automatically create fasta.fai if not there
 - Add a possibility to perform more than one iteration (need to have access to reads and aligner)
