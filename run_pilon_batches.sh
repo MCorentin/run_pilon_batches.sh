@@ -41,7 +41,7 @@ function do_batch {
 		cmd="java -jar -Xmx250G ${pilonJar}"
 	fi
 
-	cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output ${outputDir}/pilon_on_batch${batchNumber} --outdir ${outputDir}/pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads}$
+	cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output ${outputDir}/pilon_on_batch${batchNumber} --outdir ${outputDir}/pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' >  ${outputDir}/pilon_on_batch${batchNumber}.log"
 
 	echo ${cmd}
 	eval ${cmd}
@@ -104,7 +104,7 @@ fi
 fastaFaiFile=${assemblyFasta}".fai"
 if [ ! -r ${fastaFaiFile} ]; then
 	echo ""
-	echo "Cannot read the fasta.fai file (must be next to the fasta file and have the same name): ${fastaFaiFile}"
+	echo "Cannot read the fasta.fai file, it must be next to the fasta file and have the same name: ${fastaFaiFile}"
 	echo ""
 	usage
 	exit 1
