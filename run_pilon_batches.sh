@@ -7,23 +7,27 @@
 # Runs pilon in batches, uses the fasta fai from the assembly to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids)
 # Output is one folder for each batch
 
-function usage {
-        echo "USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -p [pilon.jar] -n"
-        echo "  -h Print this help message"
-        echo "  -t Number of threads to use"
-        echo "  -a Assembly in fasta format"
-        echo "  -b batch size (how many contigs to process per pilon run)"
-        echo "  -f indicate the bam files location, format : '--frags /path/to/file1.bam --frags /path/to/file2.bam'"
-	echo "  -p path to pilon jar file"
-	echo "	-n use nostray with pilon (identify weird pairs, increase memory usage)"
-}
 
 # Default values
 batchSize=100
 threads=20
 nostray="F"
+outputDir="./"
 
-while getopts ht:a:b:f:p:n opt; do
+function usage {
+        echo "USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -o [Output directory] -p [pilon.jar] -n"
+        echo "  -h Print this help message"
+        echo "  -t Number of threads to use (default: ${threads})"
+        echo "  -a Assembly in fasta format (required)"
+        echo "  -b batch size: how many sequences to process per pilon run (default: ${batchSize})"
+        echo "  -f indicate the bam files location, format : '--frags /path/to/file1.bam --frags /path/to/file2.bam' (required)"
+	echo "	-o output directory (default: current directory)"
+	echo "  -p path to pilon jar file (required)"
+	echo "	-n use nostray with pilon, this skip the identification of stray pairs but decrease memory usage (default: ${nostray})"
+}
+
+
+while getopts ht:a:b:f:o:p:n opt; do
         case ${opt} in
                 h)
                         usage
@@ -40,6 +44,9 @@ while getopts ht:a:b:f:p:n opt; do
                 ;;
                 f)
                         FRAGS=${OPTARG}
+		;;
+		o)
+			outputDir=${OPTARG}
 		;;
 		p)
 			pilonJar=${OPTARG}
@@ -77,6 +84,13 @@ if [ ! -r ${fastaFaiFile} ]; then
 fi
 
 
+if [ ! -w ${outputDir} ]; then
+	echo ""
+	echo "Cannot write to output directory : \"${outputDir}\" ! Please check your permissions"
+	echo ""
+	usage
+	exit 1
+
 ##### Add tests for other inputs (threads --frags etc...)
 
 
@@ -112,7 +126,7 @@ for ID in ${scaffoldIDs}; do
 			cmd="java -jar -Xmx250G ${pilonJar}"
 		fi
 
-		cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > pilon_on_batch${batchNumber}.log"
+		cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output ${outputDir}/pilon_on_batch${batchNumber} --outdir pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' > ${outputDir}/pilon_on_batch${batchNumber}.log"
 
 		echo ${cmd}
 		eval ${cmd}
