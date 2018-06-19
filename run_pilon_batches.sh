@@ -1,11 +1,17 @@
 #!/bin/bash
 
+# This script runs pilon in batches of sequences.
+# Motivation: running pilon on a whole assembly can produce out of memory errors + it is faster to do it by batches.
+
+# Input: same as pilon, a fasta file and bam files (reads aligned to the assembly)m it also needs the fasta index (.fai) to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids)
+# Output is one folder for each batch, then all the fasta are merged into a corrected version of the assembly.
+
+
 # TO ADD :
 #	- create fata fai if not already there
 #	- add checks for frags + heck if bams are indexed
+#	- add option for java memory
 #
-# Runs pilon in batches, uses the fasta fai from the assembly to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids)
-# Output is one folder for each batch
 
 
 # Default values
@@ -28,12 +34,12 @@ function usage {
 }
 
 
+# This method generate the pilon command for one batch and runs it
 function do_batch {
 	batchNumber=$((${batchNumber}+1))
 
 	# To avoid having a comma at the beginning (and avoid pilon throwing an error)
 	batch=$(echo ${batch} | sed 's/^,//')
-
 
 	if [ ${nostray} == "T" ]; then
 		cmd="java -jar -Xmx250G ${pilonJar} --nostrays"
@@ -42,7 +48,6 @@ function do_batch {
 	fi
 
 	cmd="${cmd} --genome ${assemblyFasta} ${FRAGS} --output pilon_on_batch${batchNumber} --outdir ${outputDir}/pilon_on_batch${batchNumber}/ --changes --fix all --threads ${threads} --targets '${batch}' >  ${outputDir}/pilon_on_batch${batchNumber}.log"
-
 	echo ${cmd}
 	eval ${cmd}
 
