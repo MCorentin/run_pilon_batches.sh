@@ -4,13 +4,14 @@ Script to run pilon by batches of sequences, developed to avoid out of memory is
 # Input
 Same as pilon, a fasta file and bam files (reads aligned to the assembly).
 This script also needs the fasta index (.fai) to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids).
-#Output
+
+# Output
 Output is one folder for each batch, then all the fasta are merged into a corrected version of the assembly.
 
 # Usage
-
+```
 bash run_pilon_batches.sh -t <i>threads</i> -a <i>assembly.fasta</i> -b <i>batchSize</i> -f <i>"--frags file1.bam --frags file2.bam ..."</i>  -o <i>"/path/to/outputDir"</i> -p <i>"/path/to/pilon.jar"</i>
-USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -o [Output directory] -p [pilon.jar] -n
+```
          
 ```
     -h Print this help message
@@ -24,16 +25,12 @@ USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [
 ```
 
 # Miscellaneous
-```
 - The script needs a fasta index (.fai) next to the assembly.
 - You need to put the quotes around the values for the -f and -p options, for the -f option you can put as many <i>--frags file.bam</i> as desired,
 - The bam (sorted and indexed) should be from an alignment against the -a <i>assembly.fasta</i> (cf pilon)
-```
 
 # To implement 
-```
 - Add memory setting option (now hard coded to 250 Gb)
 - More checks for user input (notably the --frags option) + check if bams are indexed
 - Automatically create fasta.fai if not there
 - Add a possibility to perform more than one iteration (need to have access to reads and aligner)
-```
