@@ -23,6 +23,7 @@ pilonJar=NULL
 
 function usage {
 	echo "USAGE run_pilon_batches.sh -t [Number of threads] -m [Memory limit] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -o [Output directory] -p [pilon.jar] -n"
+	echo ""
 	echo "	-h	Print this help message"
 	echo "	-t	Number of threads to use (default: 20)"
 	echo "	-m	Memory limit to use in Gb (default: 250)"

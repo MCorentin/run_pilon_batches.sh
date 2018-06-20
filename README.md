@@ -9,9 +9,9 @@ This script also needs the fasta index (.fai) to get the scaffolds IDs (then use
 Output is one folder for each batch, then all the fasta are merged into a corrected version of the assembly.
 
 # Usage
-```
+
 bash run_pilon_batches.sh -t <i>Number of threads</i> -m <i>Memory limit in Gb</i> -a <i>Assembly.fasta</i> -b <i>batch size</i> -f <i>"--frags file1.bam --frags file2.bam ..."</i>  -o <i>"/path/to/outputDir"</i> -p <i>"/path/to/pilon.jar"</i>
-```
+
          
 ```
 	-h	Print this help message
