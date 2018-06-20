@@ -10,7 +10,6 @@
 # TO ADD :
 #	- create fata fai if not already there
 #	- add checks for frags + check if bams are indexed
-#	- add option for java memory
 #	- add possibility to perform more than one iteration (needs reads + aligner tool)
 
 
@@ -23,7 +22,7 @@ outputDir="./"
 pilonJar=NULL
 
 function usage {
-	echo "USAGE run_pilon_batches.sh -t [Threads] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -o [Output directory] -p [pilon.jar] -n"
+	echo "USAGE run_pilon_batches.sh -t [Number of threads] -m [Memory limit] -a [Assembly fasta] -b [Batch size] -f [--frags align.bam] -o [Output directory] -p [pilon.jar] -n"
 	echo "	-h	Print this help message"
 	echo "	-t	Number of threads to use (default: 20)"
 	echo "	-m	Memory limit to use in Gb (default: 250)"
