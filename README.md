@@ -1,6 +1,12 @@
 # run_pilon_batches.sh
 Script to run pilon by batches of sequences, developed to avoid out of memory issues.
 
+# Installation & Dependencies
+You just have to git clone the project and launch the bash script "run_pilon_batches.sh" (see usage for more details).
+
+The only tool needed by the script is a working version of "pilon" (https://github.com/broadinstitute/pilon).
+This script has been tested with pilon v1.22
+
 # Input
 Same as pilon, a fasta file and bam files (reads aligned to the assembly).
 This script also needs the fasta index (.fai) to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids).
@@ -34,3 +40,4 @@ bash run_pilon_batches.sh -t <i>Number of threads</i> -m <i>Memory limit in Gb</
 - More checks for user input (notably the --frags option) + check if bams are indexed
 - Automatically create fasta.fai if not there
 - Add a possibility to perform more than one iteration (need to have access to reads and aligner)
+- Extend bam support for --jump and --unpaired data
