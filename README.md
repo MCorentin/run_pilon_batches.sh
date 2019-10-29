@@ -32,5 +32,4 @@ bash run_pilon_batches.sh -t <i>Number of threads</i> -m <i>Memory limit in Gb</
 
 # To implement 
 - More checks for user input (notably the --frags option) + check if bams are indexed
-- Automatically create fasta.fai if not there
 - Add a possibility to perform more than one iteration (need to have access to reads and aligner)

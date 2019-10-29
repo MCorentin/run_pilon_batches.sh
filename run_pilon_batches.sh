@@ -3,12 +3,12 @@
 # This script runs pilon in batches of sequences.
 # Motivation: running pilon on a whole assembly can produce out of memory errors + it is faster to do it by batches.
 
-# Input: same as pilon, a fasta file and bam files (reads aligned to the assembly)m it also needs the fasta index (.fai) to get the scaffolds IDs (then uses pilon --targets option to launch pilon on these Ids)
+# Input: same as pilon, a fasta file and bam files (reads aligned to the assembly) it also needs the fasta index (.fai) to get the scaffolds IDs 
+# (then uses pilon --targets option to launch pilon on these Ids)
 # Output is one folder for each batch, then all the fasta are merged into a corrected version of the assembly.
 
 
 # TO ADD :
-#	- create fata fai if not already there
 #	- add checks for frags + check if bams are indexed
 #	- add possibility to perform more than one iteration (needs reads + aligner tool)
 
@@ -146,8 +146,16 @@ if [ ! -r ${fastaFaiFile} ]; then
 	echo ""
 	echo "Cannot read the fasta.fai file, it must be next to the fasta file and have the same name: ${fastaFaiFile}"
 	echo ""
-	usage
-	exit 1
+	# Creating the fasta index if not already there
+	cmd_faidx="samtools faidx ${assemblyFasta}"
+	echo "Trying to create the index file with samtools: ${cmd_faidx}"
+	eval ${cmd_faidx}
+	# Check eval return code ($? is exit status of last command):
+	if [ $? -ne 0 ]; then
+		echo ""
+		echo "Error during the creation of the index file with samtools"
+		exit 1
+	fi
 fi
 
 
